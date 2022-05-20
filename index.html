@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Perigon Final </title>
+    <style> body {padding: 0; margin: 0;}</style>
+    <script> 
+      let breitbart;
+    </script>
+    <script src="data/pub_breitbart.js"></script>
+    <script> 
+      let hrc;
+    </script>
+    <script src="data/pub_hrc.js"></script>
+    <script> 
+      let nytimes;
+    </script>
+    <script src="data/pub_nytimes.js"></script>
+    <script src="../p5.min.js"></script>
+	<script src="sketch_3.js"></script>
+	
+  </head>
+  <body>
+    <div id="dropdown">
+      <select id="select-menu">
+        <option value="">View Sentiment</option>
+      </select>
+    </div>
+
+    <script>
+  // this part is J query / with some mapbox JavaScript
+  // it changes what is displayed based on the pulldown menu
+  //pulled this from the geojson assignment! Going to adapt it using p5 to add a dropdown to my visualization. Then going to add interactive elements! 
+    var groupsObj = {};
+
+    $(document).ready(function () {
+      infoData.features.forEach(function (feature) {
+        groupsObj[feature.properties.group_id] = feature.properties.group_name;
+      })
+
+      $.each(groupsObj, function (key, value) {
+        $('#select-menu')
+          .append($("<option></option>")
+            .attr("value", value)
+            .text(value));
+      });
+
+      $('#select-menu').change(function () {
+        var selectedGroup = $('#select-menu').val();
+
+        if (!selectedGroup) {
+          map.setFilter('datalayer', null);
+        } else {
+          map.setFilter('datalayer', ['==', ['get', 'group_name'], selectedGroup]);
+        }
+      });
+    });
+  </script>
+  </body>
+</html>
